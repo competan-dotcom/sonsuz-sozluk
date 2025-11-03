@@ -321,8 +321,8 @@ const App: React.FC = () => {
           </span>
         </h1>
         <p className="app-description" style={{ color: 'var(--text-color-subtle)', margin: 0 }}>
-            <span>[ ekranda gördüğün her kelime sonsuz bir kapıdır ]</span><br/>
-            <span>[ kelimelere tıklayın ve kapılar kapıları açsın ]</span>
+            <span>[ekranda gördüğün her kelime sonsuz bir kapıdır]</span><br/>
+            <span>[kelimelere tıklayın ve kapılar kapıları açsın]</span>
         </p>
         <div style={{ margin: '2rem 0' }} className={`ascii-art-wrapper ${animationClass}`}>
           <AsciiArtDisplay artData={asciiArt} topic={currentTopic} isHandleVisible={isHandleVisible} />
