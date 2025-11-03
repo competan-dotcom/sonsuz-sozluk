@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sonsuz sözlük</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi&family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+
+      /* --- Theme Variables --- */
+      :root {
+        --background-color: #ffffff;
+        --text-color: #000000;
+        --text-color-subtle: #888;
+        --text-color-interactive: #0000ff;
+        --border-color: #e0e0e0;
+        --skeleton-color: #e0e0e0;
+        --button-hover-bg: #f0f0f0;
+        --button-disabled-color: #ccc;
+        --error-color: #cc0000;
+      }
+
+      body.dark-mode {
+        --background-color: #121212;
+        --text-color: #e0e0e0;
+        --text-color-subtle: #888;
+        --text-color-interactive: #87cefa; /* Light Sky Blue */
+        --border-color: #444;
+        --skeleton-color: #333;
+        --button-hover-bg: #222;
+        --button-disabled-color: #555;
+        --error-color: #ff6b6b;
+      }
+      /* --- End Theme Variables --- */
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: 'Kosugi', sans-serif;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin: 0;
+        padding: 2rem 2rem 5rem 2rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      #root {
+        max-width: 65ch;
+        margin: auto;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-size: 1em;
+        margin: 0;
+        font-weight: normal;
+      }
+      button {
+        background: none;
+        border: none;
+        padding: 0;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+      .main-title-text {
+        font-family: 'Varela Round', sans-serif;
+        font-weight: normal;
+      }
+      .app-description {
+        font-family: 'Kosugi', sans-serif;
+        font-size: 12px;
+        text-align: justify;
+        text-align-last: justify;
+      }
+      .interactive-word {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+        cursor: pointer;
+      }
+      .interactive-word:hover {
+        color: var(--text-color-interactive);
+        text-decoration: underline;
+      }
+      .footer-text {
+        font-size: 0.9em;
+        color: var(--text-color-subtle);
+      }
+      .footer-text button {
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+      }
+      .footer-text button:hover {
+        color: var(--text-color-interactive);
+        text-decoration: underline;
+      }
+      .ascii-art {
+        font-family: monospace;
+        text-align: left;
+        white-space: pre;
+        color: var(--text-color-subtle);
+        margin: 0;
+        line-height: 1.1;
+        font-size: 0.75em;
+        transition: color 0.3s ease;
+      }
+      .blinking-cursor {
+        animation: blink 1.5s ease-in-out infinite;
+      }
+
+      .ascii-art-container {
+        /* No specific styles needed anymore after removing resize and hover effects. */
+      }
+      
+      .justified-text {
+        text-align: justify;
+        text-align-last: justify;
+      }
+
+      .attribution-text {
+        color: var(--text-color-subtle);
+        font-size: 0.9em;
+        text-align: left;
+        font-style: normal;
+        margin-top: 0.25rem;
+      }
+      
+      .search-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 3rem;
+      }
+
+      .search-form {
+        min-width: 16ch;
+        max-width: 16ch;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 0.1rem 0.2rem;
+        font: inherit;
+        color: inherit;
+        border: none;
+        border-bottom: 1px solid var(--border-color);
+        background-color: transparent;
+        box-sizing: border-box;
+        outline: none;
+        text-align: center;
+        transition: border-color 0.3s ease, color 0.3s ease;
+      }
+      
+      .search-input:disabled {
+        color: var(--button-disabled-color);
+      }
+
+      .search-input::placeholder {
+        color: var(--text-color-subtle);
+        opacity: 1; 
+        font-size: 14px;
+      }
+      
+      .random-button,
+      .home-button {
+        background: none;
+        border: none;
+        padding: 0.5rem 0;
+        font: inherit;
+        color: var(--text-color);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: color 0.3s ease;
+      }
+      
+      .random-button:hover:not(:disabled),
+      .home-button:hover:not(:disabled) {
+        /* No style change on hover */
+      }
+
+      .random-button:disabled,
+      .home-button:disabled {
+        color: var(--button-disabled-color);
+        cursor: not-allowed;
+      }
+
+      .theme-toggle-button {
+        font-size: 0.9em;
+        color: var(--text-color-subtle);
+        transition: color 0.2s ease-in-out;
+      }
+      .theme-toggle-button:hover {
+        color: var(--text-color-interactive);
+      }
+
+      .sticky-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 1.5rem 2rem;
+        background-color: var(--background-color);
+        box-sizing: border-box;
+        transition: background-color 0.3s ease;
+      }
+
+      .footer-content {
+        max-width: 65ch;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .ascii-art-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1ch;
+      }
+
+      .static-ascii-container {
+        margin-top: 0;
+      }
+
+      .edit-suggestion-button {
+        font-size: 0.8em;
+        color: var(--text-color-subtle);
+        text-decoration: underline;
+      }
+      .edit-suggestion-button:hover {
+        color: var(--text-color-interactive);
+      }
+      .suggestion-textarea {
+        width: 100%;
+        padding: 0.5rem;
+        font: inherit;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        margin-top: 1rem;
+        box-sizing: border-box;
+        resize: vertical;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      }
+      .suggestion-controls {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+      .suggestion-controls button {
+        font-size: 0.9em;
+        text-decoration: underline;
+      }
+       .suggestion-controls button:hover {
+        color: var(--text-color-interactive);
+       }
+       .suggestion-controls button:disabled {
+         color: var(--button-disabled-color);
+         cursor: not-allowed;
+         text-decoration: none;
+       }
+      
+      .error-message {
+        border: 1px solid var(--error-color);
+        padding: 1rem;
+        color: var(--error-color);
+        transition: color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .skeleton-bar {
+        height: 1rem;
+        background-color: var(--skeleton-color);
+        margin-bottom: 0.75rem;
+        transition: background-color 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-10px); }
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      .fade-out {
+        animation: fadeOut 0.3s ease-in forwards;
+      }
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .loading-indicator {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      @keyframes characterPulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes handleGlow {
+        0%, 100% {
+          color: var(--text-color-subtle);
+          text-shadow: none;
+        }
+        50% {
+          color: var(--text-color-interactive);
+          text-shadow: 0 0 5px var(--text-color-interactive);
+        }
+      }
+
+      .pulsing-char {
+        display: inline-block; /* Required for transform */
+        animation-name: characterPulse;
+        animation-duration: 3s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+      }
+
+      .pulsing-handle {
+        animation-name: handleGlow;
+        animation-duration: 2.5s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
