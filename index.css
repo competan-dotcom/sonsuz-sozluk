@@ -1,0 +1,35 @@
+/* -- HACI ABİ'NİN TASARIM DEĞİŞİKLİKLERİ -- */
+
+/* 1. "sonsuz sözlük" altındaki o iki satırı sola yaslamak için */
+.app-description {
+  text-align: left !important; /* !important, eski merkezlemeyi ezmek içindir */
+}
+
+/* 2. Kelimelerin (ve footer'daki linklerin) üzerine gelince mavi olan rengi kırmızı yapmak için */
+main a:hover,
+.footer-content button:hover {
+  color: #b91c1c !important; /* Koyu Kırmızı (Tailwind red-700) */
+  text-decoration-color: #b91c1c !important;
+}
+
+/* 3. O ASCII kutularındaki "yanıp sönen" mavimsi (=) ikonunu kırmızı yapmak için */
+.pulsing-handle {
+  color: #b91c1c; /* Ana rengi koyu kırmızı yapar */
+  animation: pulsing-red 1.5s infinite; /* Animasyonu da kırmızı yapar */
+}
+
+/* Orijinal "pulsing" animasyonunun (muhtemelen mavi) yerine bunu koyuyoruz */
+@keyframes pulsing-red {
+  0% {
+    color: #b91c1c; /* Koyu kırmızı */
+    text-shadow: 0 0 5px rgba(185, 28, 28, 0.2);
+  }
+  50% {
+    color: #f87171; /* Açık kırmızı (parlama efekti) */
+    text-shadow: 0 0 15px rgba(185, 28, 28, 0.8);
+  }
+  100% {
+    color: #b91c1c; /* Koyu kırmızı */
+    text-shadow: 0 0 5px rgba(185, 28, 28, 0.2);
+  }
+}
