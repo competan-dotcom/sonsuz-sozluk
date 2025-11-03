@@ -5,15 +5,11 @@
 
 import {GoogleGenAI} from '@google/genai';
 
-// This check is for development-time feedback.
-if (!process.env.API_KEY) {
-  console.error(
-    'API_KEY environment variable is not set. The application will not be able to connect to the Gemini API.',
-  );
-}
+// Vite'ın anahtarı tarayıcıya bu şekilde vermesi gerekir
+const VITE_API_KEY = import.meta.env.VITE_API_KEY;
 
 // The "!" asserts API_KEY is non-null after the check.
-const ai = new GoogleGenAI({apiKey: process.env.API_KEY!});
+const ai = new GoogleGenAI({apiKey: VITE_API_KEY!});
 const textModelName = 'gemini-2.5-flash-lite';
 
 export interface AsciiArtData {
@@ -29,7 +25,7 @@ export interface AsciiArtData {
 export async function* streamDefinition(
   topic: string,
 ): AsyncGenerator<string, void, undefined> {
-  if (!process.env.API_KEY) {
+  if (!VITE_API_KEY) {
     yield 'hata: api_key yapılandırılmamış. devam etmek için lütfen ortam değişkenlerinizi kontrol edin.';
     return;
   }
@@ -74,7 +70,7 @@ export async function* refineDefinition(
   originalDefinition: string,
   suggestion: string,
 ): AsyncGenerator<string, void, undefined> {
-  if (!process.env.API_KEY) {
+  if (!VITE_API_KEY) {
     yield 'hata: api anahtarı yapılandırılmamış.';
     return;
   }
@@ -118,7 +114,7 @@ export async function* refineDefinition(
  * @returns A promise that resolves to a single random word.
  */
 export async function getRandomWord(): Promise<string> {
-  if (!process.env.API_KEY) {
+  if (!VITE_API_KEY) {
     throw new Error('API_KEY is not configured.');
   }
 
