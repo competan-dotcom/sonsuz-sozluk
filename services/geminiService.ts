@@ -272,13 +272,10 @@ export function generateStaticAsciiBox(lines: string[], screenWidth?: number): s
 
   // Metin satırlarını sağa hizala
   const rightAlignedTextLines = lines.map(line => {
-    const text = line.length > gateWidth ? line.substring(0, gateWidth - 1) : line;
-    // Sağdan bir karakter boşluk bırak
-    const rightPaddingCount = 1;
-    const padding = gateWidth - text.length - rightPaddingCount;
-    const leftPaddingCount = Math.max(0, padding);
-    
-    return `|${' '.repeat(leftPaddingCount)}${text}${' '.repeat(rightPaddingCount)}|`;
+    const text = line.length > gateWidth ? line.substring(0, gateWidth) : line;
+    const padding = gateWidth - text.length;
+    const leftPadding = Math.max(0, padding);
+    return `|${' '.repeat(leftPadding)}${text}|`;
   });
 
   // Kutunun orta bölümünü oluştur
@@ -291,11 +288,22 @@ export function generateStaticAsciiBox(lines: string[], screenWidth?: number): s
   // Orta satıra sol kapı kolunu ekle
   const middleIndex = Math.floor(doorHeight / 2);
   if (middleLines[middleIndex]) {
-    const content = middleLines[middleIndex].slice(1, -1);
-    // İçeriğin ilk karakterini '=' ile değiştir ve sağındaki boşluğu kaldır.
-    // Bunu yapmak için içeriği sola kaydırıp sonuna bir boşluk ekliyoruz.
-    const newContent = '=' + content.substring(2) + ' ';
-    middleLines[middleIndex] = '|' + newContent + '|';
+    // Kapı kolunun olduğu satır için metin satırını bul
+    const originalLineIndex = middleIndex - topPaddingRows;
+    
+    // Orta satırın bir metin satırına karşılık gelip gelmediğini kontrol et
+    if (originalLineIndex >= 0 && originalLineIndex < lines.length) {
+      // Bu, metin içeren bir satır. Metni kapı koluyla yeniden hizala.
+      const lineText = lines[originalLineIndex];
+      const contentWidth = gateWidth - 1; // Kapı kolunun yanındaki metin için alan
+      const text = lineText.length > contentWidth ? lineText.substring(0, contentWidth) : lineText;
+      const padding = contentWidth - text.length;
+      const leftPadding = Math.max(0, padding);
+      middleLines[middleIndex] = `|=${' '.repeat(leftPadding)}${text}|`;
+    } else {
+      // Bu boş bir dolgu satırı. Sadece kapı kolunu ekle.
+      middleLines[middleIndex] = `|=${' '.repeat(gateWidth - 1)}|`;
+    }
   }
 
   return [topGate, ...middleLines, bottomGate];
