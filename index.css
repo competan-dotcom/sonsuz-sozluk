@@ -2,7 +2,7 @@
 
 /* 1. "sonsuz sözlük" altındaki o iki satırı sola yaslamak için */
 .app-description {
-  font-size: 14px !important; /* Yazı tipi boyutu küçültüldü */
+  font-size: 15px !important; /* Yazı tipi boyutu küçültüldü */
   text-align: left !important; /* !important, eski merkezlemeyi ezmek içindir */
 }
 
@@ -34,5 +34,6 @@ main a:hover,
     text-shadow: 0 0 5px rgba(185, 28, 28, 0.2);
   }
 }
+
 
 
