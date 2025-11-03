@@ -2,6 +2,7 @@
 
 /* 1. "sonsuz sözlük" altındaki o iki satırı sola yaslamak için */
 .app-description {
+  font-size: 8px !important; /* Yazı tipi boyutu küçültüldü */
   text-align: left !important; /* !important, eski merkezlemeyi ezmek içindir */
 }
 
