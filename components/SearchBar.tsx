@@ -4,6 +4,13 @@
 */
 import React, { useState } from 'react';
 
+const SearchIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+);
+
 interface SearchBarProps {
   onSearch: (query: string) => void;
   onRandom: () => void;
@@ -18,26 +25,31 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onRandom, onHome, isLoa
     event.preventDefault();
     if (query.trim() && !isLoading) {
       onSearch(query.trim());
-      setQuery(''); // Clear the input field after search
+      setQuery('');
     }
   };
-
+  
   return (
     <div className="search-container">
       <button onClick={onHome} className="home-button" disabled={isLoading}>
         anasayfa
       </button>
+      
       <form onSubmit={handleSubmit} className="search-form" role="search">
+        <span className="search-icon" aria-hidden="true">
+          <SearchIcon />
+        </span>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="bir kelime ara"
+          placeholder=""
           className="search-input"
           aria-label="bir kelime arayın"
           disabled={isLoading}
         />
       </form>
+
       <button onClick={onRandom} className="random-button" disabled={isLoading}>
         rastgele
       </button>
