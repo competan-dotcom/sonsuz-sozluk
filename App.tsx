@@ -307,17 +307,9 @@ const App: React.FC = () => {
       
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '1.5rem', display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
-          <span className={isLoading ? 'loading-indicator' : ''}>∞</span>
+          <span className={`infinity-symbol ${isLoading ? 'loading-indicator' : ''}`}>∞</span>
           <span className="main-title-text">
-            {titleText.split('').map((char, index) => (
-              <span
-                key={index}
-                className="pulsing-char"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
+            {titleText}
           </span>
         </h1>
         <p className="app-description" style={{ color: 'var(--text-color-subtle)', margin: 0 }}>
