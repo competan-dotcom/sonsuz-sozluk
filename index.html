@@ -44,6 +44,13 @@
       }
       /* --- End Theme Variables --- */
 
+      html {
+        box-sizing: border-box;
+      }
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
+
       body {
         background-color: var(--background-color);
         color: var(--text-color);
@@ -53,6 +60,7 @@
         margin: 0;
         padding: 2rem 2rem 5rem 2rem;
         transition: background-color 0.3s ease, color 0.3s ease;
+        min-height: 100vh;
       }
       #root {
         max-width: 65ch;
