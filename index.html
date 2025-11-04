@@ -93,10 +93,15 @@
         padding: 2px 4px;
         margin: -2px -4px;
         border-radius: 4px;
+        display: inline-block;
+        vertical-align: bottom;
       }
       .interactive-word:hover {
         color: var(--text-color-interactive);
         text-decoration: underline;
+      }
+      .interactive-word:active {
+        animation: wordClick 0.3s ease-in-out;
       }
       .footer-text {
         font-size: 0.9em;
@@ -368,6 +373,12 @@
         animation-duration: 2.5s;
         animation-timing-function: ease-in-out;
         animation-iteration-count: infinite;
+      }
+
+      @keyframes wordClick {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
       }
 
     </style>
