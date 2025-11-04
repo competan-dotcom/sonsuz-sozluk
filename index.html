@@ -25,6 +25,8 @@
         --button-hover-bg: #f0f0f0;
         --button-disabled-color: #ccc;
         --error-color: #cc0000;
+        --title-gradient-start: #b91c1c;
+        --title-gradient-end: #000000;
       }
 
       body.dark-mode {
@@ -37,6 +39,8 @@
         --button-hover-bg: #222;
         --button-disabled-color: #555;
         --error-color: #ff6b6b;
+        --title-gradient-start: #f87171;
+        --title-gradient-end: #e0e0e0;
       }
       /* --- End Theme Variables --- */
 
@@ -69,13 +73,26 @@
       }
       .main-title-text {
         font-family: 'Varela Round', sans-serif;
-        font-weight: normal;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+      }
+      .infinity-symbol {
+        background: linear-gradient(90deg, var(--title-gradient-start), var(--title-gradient-end), var(--title-gradient-start));
+        background-size: 200% auto;
+        background-clip: text;
+        text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: titleGradientFlow 8s ease-in-out infinite;
       }
       .interactive-word {
         color: var(--text-color);
         text-decoration: none;
         transition: color 0.2s ease-in-out;
         cursor: pointer;
+        padding: 2px 4px;
+        margin: -2px -4px;
+        border-radius: 4px;
       }
       .interactive-word:hover {
         color: var(--text-color-interactive);
@@ -134,10 +151,10 @@
       .search-form {
         display: flex;
         align-items: center;
-        min-width: 16ch;
-        max-width: 16ch;
+        min-width: 13ch;
+        max-width: 15ch;
         border-bottom: 1px solid var(--border-color);
-        padding: 0.3rem 0.2rem;
+        padding: 0.3rem 0.2rem 0.3rem 0;
         transition: border-color 0.3s ease;
       }
 
@@ -145,13 +162,15 @@
         display: flex;
         align-items: center;
         color: var(--text-color-subtle);
-        margin-right: 0.5rem;
+        margin-right: 0.4rem;
       }
 
       .search-input {
-        width: 100%;
+        flex: 1;
+        min-width: 0;
         padding: 0;
         font: inherit;
+        font-size: 0.9em;
         color: inherit;
         border: none;
         background-color: transparent;
@@ -162,6 +181,27 @@
       
       .search-input:disabled {
         color: var(--button-disabled-color);
+      }
+
+      .search-submit-button {
+        background: none;
+        border: none;
+        padding: 0 0 0 0.4rem;
+        font: inherit;
+        font-size: 0.9em;
+        color: var(--text-color);
+        opacity: 0.7;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      }
+      .search-submit-button:hover:not(:disabled) {
+        color: var(--text-color-interactive);
+        opacity: 1;
+      }
+      .search-submit-button:disabled {
+        color: var(--button-disabled-color);
+        cursor: not-allowed;
       }
       
       .random-button,
@@ -306,13 +346,10 @@
         animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
       }
 
-      @keyframes characterPulse {
-        0%, 100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
+      @keyframes titleGradientFlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
 
       @keyframes handleGlow {
@@ -324,14 +361,6 @@
           color: var(--text-color-interactive);
           text-shadow: 0 0 5px var(--text-color-interactive);
         }
-      }
-
-      .pulsing-char {
-        display: inline-block; /* Required for transform */
-        animation-name: characterPulse;
-        animation-duration: 3s;
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
       }
 
       .pulsing-handle {
